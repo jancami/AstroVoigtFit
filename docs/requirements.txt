@@ -1,0 +1,5 @@
+numpy
+astropy
+lmfit
+sphinx_astropy
+specutils
