@@ -25,4 +25,10 @@ Please see our `documentation <https://AstroVoigtFit.readthedocs.io/en/latest/in
 
 Contributing
 ============
+Contributions to AstroVoigtFit are encouraged. There are some community guidelines for contriubution:
+
+Contributions can be done through the Pull Request system on Github. 
+Any identified bugs or suggestions can be noted using Github Issues. 
+
+All code must follow Code submitted to EDIBLES should conform to a GNU-style license, and follow the PEP8 style guide and be documented according to `Google Documentation Guide <https://google.github.io/styleguide/pyguide.html>`_. 
 
