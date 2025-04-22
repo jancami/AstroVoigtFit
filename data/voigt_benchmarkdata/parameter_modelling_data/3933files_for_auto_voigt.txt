@@ -1,0 +1,4 @@
+zetper.k93 1.20
+zetoph.k93 1.20
+omiper.k93 1.20
+sigsco.k95a 1.25

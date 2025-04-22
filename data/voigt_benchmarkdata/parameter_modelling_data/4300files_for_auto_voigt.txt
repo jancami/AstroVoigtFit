@@ -1,0 +1,3 @@
+zetper.cls 0.60
+zetoph.cls 0.60
+omiper.cls 0.60

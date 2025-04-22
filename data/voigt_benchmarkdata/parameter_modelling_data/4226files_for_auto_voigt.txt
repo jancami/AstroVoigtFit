@@ -1,0 +1,4 @@
+zetper.m96 0.50
+omiper.m96 0.50
+zetoph.k96b 1.35
+sigsco.a97 0.32
