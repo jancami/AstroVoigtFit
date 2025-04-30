@@ -1,10 +1,10 @@
-from edibles.utils import voigt_profile as vp
+from functions.benchmark_voigt import voigt_profile as vp
 import scipy.signal as ss
 import numpy as np
 import astropy.constants as cst
 import matplotlib.pyplot as plt
-import edibles.utils.benchmark_voigt.initial_guesses as ig
-from edibles.utils.benchmark_voigt import auto_voigt_fit as av
+import functions.benchmark_voigt.initial_guesses as ig
+from functions.benchmark_voigt import auto_voigt_fit as av
 
 
 
