@@ -4,13 +4,13 @@ from scipy.interpolate import interp1d
 import astropy.constants as cst
 import matplotlib.pyplot as plt
 from edibles import PYTHONDIR
-from edibles.utils.edibles_oracle import EdiblesOracle
-from edibles.utils.edibles_spectrum import EdiblesSpectrum
+from edibles.utils.edibles_oracle import EdiblesOracle #need to go through an remove since not using these functions/imports
+from edibles.utils.edibles_spectrum import EdiblesSpectrum #
 from pathlib import Path
 import pandas as pd
 from scipy.ndimage import gaussian_filter
 from lmfit import Parameters, minimize,Model
-from edibles.utils.voigt_profile import *
+from functions.benchmark_voigt.voigt_profile import *
 
 def read_benchmark_data (filename):
     """
