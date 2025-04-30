@@ -1,12 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from edibles.utils.voigt_profile import *
-from edibles.utils.benchmark_voigt import parameter_modelling as pm
+from functions.benchmark_voigt.voigt_profile import *
+from functions.benchmark_voigt import parameter_modelling as pm
 
 
-import edibles.utils.benchmark_voigt.errors as e
-import edibles.utils.benchmark_voigt.read_data as rd
-from edibles.utils.benchmark_voigt.benchmark_fit import *
+import functions.benchmark_voigt.errors as e
+import functions.benchmark_voigt.read_data as rd
+from functions.benchmark_voigt.benchmark_fit import *
 
 
 #this file produces just the welty and hobbs data, similar to the way auto_fit.py does it
