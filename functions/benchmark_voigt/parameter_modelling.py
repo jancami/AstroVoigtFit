@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from edibles import PYTHONDIR
 from pathlib import Path
 import pandas as pd
-from edibles.utils import voigt_profile as vp
+from functions.benchmark_voigt import voigt_profile as vp
 import os.path
 
 def file_reader (star_name):
