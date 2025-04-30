@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from edibles import PYTHONDIR
+from functions import PYTHONDIR
 from pathlib import Path
 import pandas as pd
 from functions.benchmark_voigt import voigt_profile as vp
