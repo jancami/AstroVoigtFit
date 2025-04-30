@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from edibles.utils import voigt_profile as vp
+from functions.benchmark_voigt import voigt_profile as vp
 def populate_params(ourfit,bour,dbic,bwh,nwh,vwh,wl,nf,cw,f,g,vres,nstep,stddev, starname,whfit,errors):
     b_WH = bwh
     N_WH = nwh
