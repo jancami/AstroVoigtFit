@@ -1,10 +1,10 @@
-from edibles.utils import voigt_profile as vp
+from functions.benchmark_voigt import voigt_profile as vp
 import scipy.signal as ss
 import numpy as np
 import astropy.constants as cst
 import matplotlib.pyplot as plt
 
-from edibles.utils.benchmark_voigt import auto_voigt_fit as av
+from functions.benchmark_voigt import auto_voigt_fit as av
 
 def initial_parm_guess(wave,flux,wavel,vres):
     b = np.array([0.25])
@@ -63,6 +63,8 @@ def multicomp(wl,vr,res,cw,vres):
     # check that we are adding the right amount of components
     # print('components to be fitted', len(v_rad))
 
+    #additional change to intial guesses after reaching 5 components as the components get much smaller
+    #the fitting routine targets larger components first
     if len(v_rad) > 5:
         # v_rad[-1] = -5
         b[-1] = 0.45
