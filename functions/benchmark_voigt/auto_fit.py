@@ -1,12 +1,12 @@
 import lmfit.model
 
-import edibles.utils.benchmark_voigt.errors as e
-import edibles.utils.benchmark_voigt.fits as fi
-import edibles.utils.benchmark_voigt.initial_guesses as ig
-import edibles.utils.benchmark_voigt.populate_params as pp
-import edibles.utils.benchmark_voigt.read_data as rd
+import functions.benchmark_voigt.errors as e
+import functions.benchmark_voigt.fits as fi
+import functions.benchmark_voigt.initial_guesses as ig
+import functions.benchmark_voigt.populate_params as pp
+import functions.benchmark_voigt.read_data as rd
 import matplotlib.pyplot as plt
-from edibles.utils import voigt_profile as vp
+from functions.benchmark_voigt import voigt_profile as vp
 import numpy as np
 
 #get data for sightlines
