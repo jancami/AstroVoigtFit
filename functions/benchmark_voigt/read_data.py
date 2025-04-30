@@ -1,4 +1,4 @@
-from edibles import PYTHONDIR
+from functions import PYTHONDIR
 from pathlib import Path
 import pandas as pd
 import numpy as np
