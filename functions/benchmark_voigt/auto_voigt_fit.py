@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from edibles.utils import voigt_profile as vp
-from edibles.utils.benchmark_voigt.parameter_modelling import file_reader
+from functions.benchmark_voigt import voigt_profile as vp
+from functions.benchmark_voigt.parameter_modelling import file_reader
 import astropy.constants as cst
 import scipy.signal as ss
 from edibles import PYTHONDIR
