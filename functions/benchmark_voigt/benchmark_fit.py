@@ -3,7 +3,7 @@ from scipy.special import wofz
 from scipy.interpolate import interp1d
 import astropy.constants as cst
 import matplotlib.pyplot as plt
-from edibles import PYTHONDIR
+from functions import PYTHONDIR
 from edibles.utils.edibles_oracle import EdiblesOracle #need to go through an remove since not using these functions/imports
 from edibles.utils.edibles_spectrum import EdiblesSpectrum #
 from pathlib import Path
