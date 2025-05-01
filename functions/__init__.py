@@ -5,7 +5,7 @@ from sys import platform
 #then within I created another folder called python, in that folder i store all of my python projects.
 
 
-#set up environmental varibles, I used pycharm so its a little different
+#set up environmental varibles, I used pycharm so its a little different, it varies system to system, I googled how to do it.
 #create environmental variables,you need two: 
 #PYTHONPATH = '/home/python'
 #AVF_PYTHONDIR = '/home/python/AstroVoigtFit
