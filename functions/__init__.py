@@ -4,7 +4,8 @@ from sys import platform
 #you will want to create some folders to keep all of your python projects in, i created a folder called home, 
 #then within I created another folder called python, in that folder i store all of my python projects.
 
-
+#when installing this repository I recommend making a fresh virtual environmnet, 
+#I did not do that when I started and its somewhat of a problem
 #set up environmental varibles, I used pycharm so its a little different, it varies system to system, I googled how to do it.
 #create environmental variables,you need two: 
 #PYTHONPATH = '/home/python'
