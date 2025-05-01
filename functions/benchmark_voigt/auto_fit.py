@@ -9,6 +9,10 @@ import matplotlib.pyplot as plt
 from functions.benchmark_voigt import voigt_profile as vp
 import numpy as np
 
+#this file, incorporates the functions found in the rest of the files in the benchmark_voigt folder
+#much like wh_fit.py the variables for read_benchmark_data,get_lamb_flux, and the f and g values can be found for each element/molecule
+#in mail.txt
+
 #get data for sightlines
 resolution, star_name, central_wavelength = rd.read_benchmark_data(4226.728,4226)
 f = 1.77
