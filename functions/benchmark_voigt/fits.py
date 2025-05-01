@@ -10,6 +10,23 @@ from functions.benchmark_voigt import auto_voigt_fit as av
 
 
 def welty_hobbs(wavelen,nflux,cenw,f,g,b,n,v,vres,nstep,stddev):
+    """ calls the fit_multi_voigt_absorptionlines function with the welty and hobbs parameters.
+        Args:
+            wavelen(ndarray): wavelength array (angstroms)
+            nflux(ndarray): normalized flux array
+            cenw(float64): central wavelength (angstroms)
+            f(float64): oscilator strength
+            g(float64): Lorentzian gamma
+            b(float64): the b parameter (gaussian width) (km/s)
+            n(float64):  The column density (in cm^{-2})
+            v (float64): Radial velocity of absorption line (in km/s)
+            vres(float64): Instrument resolution in velocity space (in km/s)
+            nstep (int): no. of point per FWHM length, governing sampling rate and efficiency
+            stddev: The errors used for the fit_multi_voigt_absorptionlines call
+
+        Returns:
+            whfit: an lmfit model instance"""
+    
     whfit = vp.fit_multi_voigt_absorptionlines(wavegrid=wavelen,
                                                ydata=nflux,
                                                restwave=cenw,
@@ -25,6 +42,36 @@ def welty_hobbs(wavelen,nflux,cenw,f,g,b,n,v,vres,nstep,stddev):
 
 
 def our_fit(wavelen,nflux,cenw,f,g,bour,nour,vour,vres,nstep,stddev,starname,bwh,nwh):
+    """ calls the fit_multi_voigt_absorptionlines function with our inital parameter guesses from inital_guesses.py. 
+        Also determines whether to keep the fit going based off of the reduced chi squared, AIC and BIC.
+        
+        Args:
+            wavelen(ndarray): wavelength array (angstroms)
+            nflux(ndarray): normalized flux array
+            cenw(float64): central wavelength (angstroms)
+            f(float64): oscilator strength
+            g(float64): Lorentzian gamma
+            bour(float64): the b parameter (gaussian width) (km/s)
+            nour(float64):  The column density (in cm^{-2})
+            vour (float64): Radial velocity of absorption line (in km/s)
+            vres(float64): Instrument resolution in velocity space (in km/s)
+            nstep (int): no. of point per FWHM length, governing sampling rate and efficiency
+            stddev: The errors used for the fit_multi_voigt_absorptionlines call
+            starname(string): Name of the star to label the plots
+            bwh(ndarry): the b parameter from welty and hobbs
+            nwh(ndarray): the N parameter fromm welty and hobbs
+
+        Returns:
+            fit: an lmfit model instance
+            b: ndarray
+            the b parameter array produced by the fitting algorthm
+            n: ndarray
+            the N parameter array produced by the fitting algorthm
+            v_rad: ndarray
+            the v_rad parameter array produced by the fitting algorthm
+            delta_bic: the change in BIC between the final fit, and its previous fit
+            """
+    
     fit1 = vp.fit_multi_voigt_absorptionlines(wavegrid=wavelen,
                                              ydata=nflux,
                                              restwave=cenw,
