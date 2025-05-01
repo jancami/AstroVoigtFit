@@ -6,7 +6,20 @@ import matplotlib.pyplot as plt
 
 from functions.benchmark_voigt import auto_voigt_fit as av
 
-def initial_parm_guess(wave,flux,wavel,vres):
+def initial_parm_guess(wave,flux,wavel):
+    """this produces the inital guesses for b, N and v_rad for a one component fit.
+        Args:
+            wave: the wavelengths (angstroms)
+            flux: the normalized flux
+            wavel: the central wavelength (angstroms)
+        Returns:
+            b: ndarray
+            array containing the initial b value
+            N: ndarray
+            array containing the initial N value
+            v_rad: ndarray
+            array containing the initial v_rad value"""
+            
     b = np.array([0.25])
     N = np.array([1e12])
 
@@ -23,6 +36,23 @@ def initial_parm_guess(wave,flux,wavel,vres):
     return b,N,v_rad
 
 def multicomp(wl,vr,res,cw,vres):
+    """produces the initial guesses for b,N and v_rad for multiple component fits, 
+    uses the absolute maximum of the residuals to determine v_rad.
+        Args:
+            wl: the wavelengths (angstroms)
+            vr: radial velocity in km/s
+            res: residuals
+            cw: the central wavelength (angstroms)
+            vres: instrumental resolution (km/s)
+        Returns:
+            b: ndarray
+            array containing the initial b values
+            N: ndarray
+            array containing the initial N values
+            v_rad: ndarray
+            array containing the initial v_rad values"""
+            
+               
     # find the peak position of the residuals plot
     peak_position = wl[np.argwhere(np.abs(res) == np.max(np.abs(res)))[0, 0]]
     # peak_position = 1
