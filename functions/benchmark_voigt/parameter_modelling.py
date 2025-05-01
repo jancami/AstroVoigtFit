@@ -30,7 +30,7 @@ def file_reader (star_name):
     data = pd.read_csv(
         filename,
         delim_whitespace=True,
-        skiprows=[0], #46
+        skiprows=[0], #replace with 46 for zetoph.m89
         header=None,
         names=Headers,
         engine="python",
