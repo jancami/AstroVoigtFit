@@ -1,7 +1,31 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from functions.benchmark_voigt import voigt_profile as vp
-def populate_params(ourfit,bour,dbic,bwh,nwh,vwh,wl,nf,cw,f,g,vres,nstep,stddev, starname,whfit,errors):
+def populate_params(ourfit,bour,dbic,bwh,nwh,vwh,wl,nf,cw,f,g,vres,nstep,stddev, starname,whfit):
+    """ sorts the arrays containing the final parameters plots the final fit,
+        and creates a table that displays the final fit parameters side by side with he welty and hobbs parameters.
+
+        Args: 
+            ourfit: the model instance from fits.py
+            bour: the b parameter from the ourfit instance
+            dbic: the delta BIC 
+            bwh: the welty and hobbs b parameter
+            nwh: the welty and hobbs N parameter
+            vwhL the welty and hobbs v_rad parameter
+            wl: the wavelengths from the data set
+            nf: the normalized flux from the data set
+            cw: the central wavelength
+            f: the oscillator strength
+            g: Lorentzian gamma 
+            vres: instrumental resolution
+            nstep: no. of point per FWHM length, governing sampling rate and efficiency
+            stddev: errors defined from the first 50 points
+            starname: Name of the star to label the plots
+            whfit: the model instance of the welty and hobbs fit
+
+        Returns:
+            fit: the lmfit model instance from our algorthm, returned again just in case"""
+    
     b_WH = bwh
     N_WH = nwh
     v_rad_WH = vwh
@@ -203,7 +227,7 @@ def populate_params(ourfit,bour,dbic,bwh,nwh,vwh,wl,nf,cw,f,g,vres,nstep,stddev,
     # plt.savefig('c:/Users/user/edibles/edibles/data/voigt_benchmarkdata/parameter_modelling_data/'+star_name[i]+'_table_data.png')
     plt.show()
 
-    return fit, b, N, v_rad
+    return fit
 
 
 
