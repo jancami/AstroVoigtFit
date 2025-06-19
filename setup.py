@@ -12,5 +12,12 @@ setup(
         "astropy>=4.0",
         "pandas",
         "lmfit",
+        "cycler",
+        "kiwisolver",
+        "pyparsing",
+        "python-dateutil",
+        "pytz",
+        "six",
+        "PyQt5",
     ],
 )
