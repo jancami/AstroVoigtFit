@@ -6,10 +6,10 @@ setup(
     packages=find_packages(),
     install_requires=[
         "numpy",
-        "scipy",
+        "scipy>=0.19",
         "matplotlib",
         "specutils"
-        "astropy>=4.0",
+        "astropy>=4.0.0",
         "pandas",
         "lmfit",
         "cycler",
