@@ -12,10 +12,6 @@ A Python package for fitting astrophysical absorption spectra using Voigt profil
 Key Features:
 -------------
 
-- `read_inputs.py`: The **master function** to run Voigt profile fits from input files.
-- `continuum.py`: Fits the **continuum** of the spectrum before line fitting.
-- `astrovoigtfit.py`: Core module to **fit individual species** using Voigt profiles.
-
 Usage:
 ------
 
