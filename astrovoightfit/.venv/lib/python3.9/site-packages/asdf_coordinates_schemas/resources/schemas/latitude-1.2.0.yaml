@@ -1,0 +1,36 @@
+%YAML 1.1
+---
+$schema: "http://stsci.edu/schemas/yaml-schema/draft-01"
+id: "http://astropy.org/schemas/astropy/coordinates/latitude-1.2.0"
+
+title: |
+  Represents latitude-like angles.
+
+description: |
+  Represents latitude-like angle(s) which must be in the range -90 to +90 deg.
+
+examples:
+  -
+    - A Latitude object in Degrees
+    - asdf-standard-1.6.0
+    - |
+        !<tag:astropy.org:astropy/coordinates/latitude-1.2.0>
+          unit: !unit/unit-1.0.0 deg
+          value: 10.0
+
+type: object
+properties:
+  value:
+    description: |
+      A vector of one or more values
+    anyOf:
+      - type: number
+      - tag: "tag:stsci.edu:asdf/core/ndarray-1.*"
+  unit:
+    description: |
+      The unit corresponding to the values
+    anyOf:
+      - tag: "tag:stsci.edu:asdf/unit/unit-1.*"
+      - tag: "tag:astropy.org:astropy/units/unit-1.*"
+required: [value, unit]
+...

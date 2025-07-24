@@ -1,0 +1,175 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="English" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AstroVoigtFit &mdash; AstroVoigtFit 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=ae67b299"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="content/code/installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            AstroVoigtFit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="content/code/installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Code Description</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="content/code/voigt.html">Other Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/code/forward_model.html">Forward Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/code/Wrapper.html">master_function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="content/code/fitting.html">Voigt Profile and Continuum Fitting</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">AstroVoigtFit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">AstroVoigtFit</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="astrovoigtfit">
+<h1>AstroVoigtFit<a class="headerlink" href="#astrovoigtfit" title="Link to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">AstroVoigtFit</span></code> is a Python package for fitting Voigt profiles to astronomical data. It is designed to handle spectral data (EDIBLES survey). It has the capability
+to fit multiple clouds with multiple species with multiple line.</p>
+<p><em>Enjoy the reading</em></p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="content/code/installation.html">Installation</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Code Description</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="content/code/voigt.html">Other Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="content/code/voigt.html#function-list">Function List</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="content/code/voigt.html#other_functions.fwhm2sigma"><code class="docutils literal notranslate"><span class="pre">fwhm2sigma()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="content/code/voigt.html#other_functions.VoigtFWHM"><code class="docutils literal notranslate"><span class="pre">VoigtFWHM()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="content/code/voigt.html#other_functions.getVGrid"><code class="docutils literal notranslate"><span class="pre">getVGrid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="content/code/voigt.html#other_functions.voigt_profile"><code class="docutils literal notranslate"><span class="pre">voigt_profile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="content/code/voigt.html#other_functions.voigt_optical_depth"><code class="docutils literal notranslate"><span class="pre">voigt_optical_depth()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="content/code/voigt.html#function-details">Function Details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="content/code/voigt.html#fwhm2sigma">fwhm2sigma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="content/code/voigt.html#voigtfwhm">VoigtFWHM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="content/code/voigt.html#getvgrid">getVGrid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="content/code/voigt.html#voigt-profile">voigt_profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="content/code/voigt.html#voigt-optical-depth">voigt_optical_depth</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="content/code/voigt.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="content/code/forward_model.html">Forward Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="content/code/forward_model.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/code/forward_model.html#function-definition">Function Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/code/forward_model.html#explanation-of-each-step">Explanation of Each Step</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/code/forward_model.html#why-this-version-is-faster">Why This Version is Faster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/code/forward_model.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="content/code/Wrapper.html">master_function</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="content/code/Wrapper.html#astrovoigtfit.master_function"><code class="docutils literal notranslate"><span class="pre">master_function()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/code/Wrapper.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/code/Wrapper.html#accepted-parameter-groups">Accepted Parameter Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/code/Wrapper.html#returns">Returns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="content/code/Wrapper.html#raises">Raises</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="content/code/fitting.html">Voigt Profile and Continuum Fitting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="content/code/fitting.html#function-reference">Function Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="content/code/fitting.html#astrovoigtfit.fit_continuum"><code class="docutils literal notranslate"><span class="pre">fit_continuum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="content/code/fitting.html#astrovoigtfit.Voigt_fit_wrapper"><code class="docutils literal notranslate"><span class="pre">Voigt_fit_wrapper()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="content/code/fitting.html#astrovoigtfit.astro_voigt_fit"><code class="docutils literal notranslate"><span class="pre">astro_voigt_fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="content/code/installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Edibles.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+%YAML 1.1
+---
+$schema: "http://stsci.edu/schemas/yaml-schema/draft-01"
+id: "http://stsci.edu/schemas/asdf/transform/log_parabola1d-1.2.0"
+title: >
+  One dimensional log parabola model (sometimes called curved power law).
+
+description: >
+  One dimensional log parabola model (sometimes called curved power law).
+
+examples:
+  -
+    - $$f(x) = 10*(\frac{x}{0.5})^{-2.0-3.2\log{(\frac{x}{0.5})}}$$
+    - asdf-standard-1.6.0
+    - |
+      !transform/log_parabola1d-1.2.0 {alpha: 2.0, amplitude: 10.0, beta: 3.2, x_0: 0.5}
+
+allOf:
+  - $ref: "transform-1.4.0"
+  - type: object
+    properties:
+      amplitude:
+        anyOf:
+          - tag: "tag:stsci.edu:asdf/unit/quantity-1.*"
+          - type: number
+        description: Model amplitude.
+      x_0:
+        anyOf:
+          - tag: "tag:stsci.edu:asdf/unit/quantity-1.*"
+          - type: number
+        description: Reference point.
+      alpha:
+        anyOf:
+          - tag: "tag:stsci.edu:asdf/unit/quantity-1.*"
+          - type: number
+        description: Power law index.
+      beta:
+        anyOf:
+          - tag: "tag:stsci.edu:asdf/unit/quantity-1.*"
+          - type: number
+        description: Power law curvature.
+
+    required: ['amplitude', 'x_0', 'alpha', 'beta']
+...

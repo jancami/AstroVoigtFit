@@ -1,0 +1,39 @@
+%YAML 1.1
+---
+$schema: "http://stsci.edu/schemas/yaml-schema/draft-01"
+id: "http://stsci.edu/schemas/asdf/transform/planar2d-1.2.0"
+title: >
+  Two dimensional plane model.
+
+description: >
+  Two dimensional plane model.
+
+examples:
+  -
+    - $$f(x, y)= a=5.0x + 2.5y + 11$$
+    - asdf-standard-1.6.0
+    - |
+      !transform/planar2d-1.2.0 {intercept: 11.0, slope_x: 5.0, slope_y: 2.5}
+
+allOf:
+  - $ref: "transform-1.4.0"
+  - type: object
+    properties:
+      slope_x:
+        anyOf:
+          - tag: "tag:stsci.edu:asdf/unit/quantity-1.*"
+          - type: number
+        description: Slope of the stright line in x.
+      slope_y:
+        anyOf:
+          - tag: "tag:stsci.edu:asdf/unit/quantity-1.*"
+          - type: number
+        description: Slope of the straight lie in y.
+      intercept:
+        anyOf:
+          - tag: "tag:stsci.edu:asdf/unit/quantity-1.*"
+          - type: number
+        description: z-intercept of the straight line.
+
+    required: ['slope_x', 'slope_y', 'intercept']
+...
