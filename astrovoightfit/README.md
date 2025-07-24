@@ -1,20 +1,22 @@
-   ___         _              __      ___     _ _ _ _ _       
-  / _ \___ ___| |_ ___  _ __  \ \    / (_) __| (_) | |_ _  _ 
- | | | / _ (_-<  _/ _ \| '_ \  \ \/\/ /| |/ _` | | | |  _| || |
- | |_| \_,__/__/\__\___/| .__/   \_/\_/ |_|\__,_|_|_|_|\__|\_, |
-  \___/                  |_|                              |__/  
+# AstroVoigtFit
 
-AstroVoigtFit
-=============
+```
+    ___          __             _    __      _       __  _______ __
+   /   |   _____/ /__________  | |  / /___  (_)___ _/ /_/ ____(_) /_
+  / /| |  / ___/ __/ ___/ __ \ | | / / __ \/ / __ `/ __/ /_  / / __/
+ / ___ | (__  ) /_/ /  / /_/ / | |/ / /_/ / / /_/ / /_/ __/ / / /_
+/_/  |_|/____/\__/_/   \____/  |___/\____/_/\__, /\__/_/   /_/\__/
+                                           /____/
+```
 
-A Python package for fitting astrophysical absorption spectra using Voigt profiles.
+**A Python package for fitting astrophysical absorption spectra using Voigt profiles.**
 
-Key Features:
+## Key Features:
 -------------
 
-Usage:
+## Usage:
 ------
 
 ```bash
 python astrovoightfit/utils/read_inputs.py
-
+```
