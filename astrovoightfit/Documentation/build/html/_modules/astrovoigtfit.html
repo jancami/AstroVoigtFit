@@ -1,0 +1,398 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="English" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astrovoigtfit &mdash; AstroVoigtFit 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=ae67b299"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            AstroVoigtFit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../content/code/installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Code Description</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../content/code/voigt.html">Other Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/code/forward_model.html">Forward Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/code/Wrapper.html">master_function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/code/fitting.html">Voigt Profile and Continuum Fitting</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AstroVoigtFit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">astrovoigtfit</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for astrovoigtfit</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.polynomial.chebyshev</span><span class="w"> </span><span class="kn">import</span> <span class="n">Chebyshev</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lmfit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parameters</span><span class="p">,</span> <span class="n">Model</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model</span><span class="w"> </span><span class="kn">import</span> <span class="n">master_function</span>
+
+
+
+
+<span class="c1"># first we will fit the continuum</span>
+<div class="viewcode-block" id="fit_continuum">
+<a class="viewcode-back" href="../content/code/fitting.html#astrovoigtfit.fit_continuum">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fit_continuum</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">flux</span><span class="p">,</span> <span class="n">absorption_range</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">return_std</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fit a Chebyshev polynomial to the continuum, excluding an absorption region.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    - wavelength: array of wavelengths</span>
+<span class="sd">    - flux: array of flux values</span>
+<span class="sd">    - absorption_range: tuple (start, end) defining the absorption region to exclude</span>
+<span class="sd">    - degree: degree of the Chebyshev polynomial</span>
+<span class="sd">    - return_std: if True, returns standard deviation of continuum points outside absorption region</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    - normalized_flux: array of normalized flux values (flux/continuum)</span>
+<span class="sd">    - continuum: array of fitted continuum values for all wavelengths</span>
+<span class="sd">    - poly: the fitted Chebyshev polynomial object</span>
+<span class="sd">    - std (optional): standard deviation of points outside absorption region</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Mask the absorption region</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">wavelength</span> <span class="o">&lt;</span> <span class="n">absorption_range</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">|</span> <span class="p">(</span><span class="n">wavelength</span> <span class="o">&gt;</span> <span class="n">absorption_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">wl_continuum</span> <span class="o">=</span> <span class="n">wavelength</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+    <span class="n">flux_continuum</span> <span class="o">=</span> <span class="n">flux</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+    
+    <span class="c1"># Fit Chebyshev polynomial</span>
+    <span class="n">poly</span> <span class="o">=</span> <span class="n">Chebyshev</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">wl_continuum</span><span class="p">,</span> <span class="n">flux_continuum</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="n">degree</span><span class="p">)</span>
+    
+    <span class="c1"># Evaluate continuum over the entire wavelength range</span>
+    <span class="n">continuum</span> <span class="o">=</span> <span class="n">poly</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)</span>
+    <span class="n">normalized_flux</span> <span class="o">=</span> <span class="n">flux</span> <span class="o">/</span> <span class="n">continuum</span>
+    
+    <span class="k">if</span> <span class="n">return_std</span><span class="p">:</span>
+        <span class="c1"># Calculate standard deviation only for points outside absorption region</span>
+        <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">normalized_flux</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Subtract 1 because continuum is normalized to 1</span>
+        <span class="k">return</span> <span class="n">normalized_flux</span><span class="p">,</span> <span class="n">continuum</span><span class="p">,</span> <span class="n">poly</span><span class="p">,</span> <span class="n">std</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">normalized_flux</span><span class="p">,</span> <span class="n">continuum</span><span class="p">,</span> <span class="n">poly</span></div>
+
+
+
+
+<span class="c1"># --- Wrapper for model evaluation ---</span>
+<div class="viewcode-block" id="Voigt_fit_wrapper">
+<a class="viewcode-back" href="../content/code/fitting.html#astrovoigtfit.Voigt_fit_wrapper">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">Voigt_fit_wrapper</span><span class="p">(</span><span class="o">**</span><span class="n">params_list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generalized Voigt profile evaluation wrapper for any number of species and components.</span>
+
+<span class="sd">    This function is designed to be compatible with `lmfit.Model` by accepting a flat</span>
+<span class="sd">    parameter dictionary (`**params_list`). It extracts species-specific parameters and</span>
+<span class="sd">    reformats them for the `master_function`, which performs the actual absorption modeling.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    **params_list : dict</span>
+<span class="sd">        Dictionary of flat model parameters. Expected keys include:</span>
+<span class="sd">        </span>
+<span class="sd">        - &#39;n_species&#39;: Number of species to model</span>
+<span class="sd">        - &#39;wavegrid&#39;: Wavelength grid</span>
+<span class="sd">        - &#39;v_resolution&#39;: Instrumental velocity resolution in km/s</span>
+<span class="sd">        - &#39;n_step&#39;: Number of steps per Doppler width</span>
+
+<span class="sd">        For each species `i`, the following keys must be present:</span>
+<span class="sd">        </span>
+<span class="sd">        - &#39;n_trans_i&#39;: Number of transitions for species `i`</span>
+<span class="sd">        - &#39;n_component_i&#39;: Number of absorbing components for species `i`</span>
+<span class="sd">        </span>
+<span class="sd">        For each transition `j` in species `i`:</span>
+<span class="sd">            - &#39;lambda_i_j&#39;: Line center wavelength</span>
+<span class="sd">            - &#39;f_i_j&#39;: Oscillator strength</span>
+<span class="sd">            - &#39;gamma_i_j&#39;: Damping constant</span>
+
+<span class="sd">        For each component `k` in species `i`:</span>
+<span class="sd">            - &#39;v_rad_i_k&#39;: Radial velocity (km/s)</span>
+<span class="sd">            - &#39;b_i_k&#39;: Doppler parameter (km/s)</span>
+<span class="sd">            - &#39;N_i_k&#39;: Column density</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        The absorption model evaluated over the input wavelength grid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_species</span> <span class="o">=</span> <span class="n">params_list</span><span class="p">[</span><span class="s1">&#39;n_species&#39;</span><span class="p">]</span>
+    <span class="n">wavegrid</span> <span class="o">=</span> <span class="n">params_list</span><span class="p">[</span><span class="s1">&#39;wavegrid&#39;</span><span class="p">]</span>
+    <span class="n">v_resolution</span> <span class="o">=</span> <span class="n">params_list</span><span class="p">[</span><span class="s1">&#39;v_resolution&#39;</span><span class="p">]</span>
+    <span class="n">n_step</span> <span class="o">=</span> <span class="n">params_list</span><span class="p">[</span><span class="s1">&#39;n_step&#39;</span><span class="p">]</span>
+    
+    <span class="c1"># Prepare data structures for all species</span>
+    <span class="n">species_data</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">for</span> <span class="n">species_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">n_species</span><span class="p">)):</span>
+        <span class="n">n_trans</span> <span class="o">=</span> <span class="n">params_list</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;n_trans_</span><span class="si">{</span><span class="n">species_idx</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+        <span class="n">n_component</span> <span class="o">=</span> <span class="n">params_list</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;n_component_</span><span class="si">{</span><span class="n">species_idx</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+        
+        <span class="c1"># Extract transition parameters for this species</span>
+        <span class="n">n_trans</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">n_trans</span><span class="p">))</span> 
+        <span class="n">all_lambda</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_trans</span><span class="p">)</span>
+        <span class="n">all_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_trans</span><span class="p">)</span>
+        <span class="n">all_gamma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_trans</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_trans</span><span class="p">):</span>
+            <span class="n">all_lambda</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">params_list</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;lambda_</span><span class="si">{</span><span class="n">species_idx</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+            <span class="n">all_f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">params_list</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;f_</span><span class="si">{</span><span class="n">species_idx</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+            <span class="n">all_gamma</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">params_list</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;gamma_</span><span class="si">{</span><span class="n">species_idx</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+        
+        <span class="c1"># Extract component parameters for this species</span>
+        <span class="n">all_v_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_component</span><span class="p">)</span>
+        <span class="n">all_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_component</span><span class="p">)</span>
+        <span class="n">all_N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n_component</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_component</span><span class="p">):</span>
+            <span class="n">all_v_rad</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">params_list</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;v_rad_</span><span class="si">{</span><span class="n">species_idx</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+            <span class="n">all_b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">params_list</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;b_</span><span class="si">{</span><span class="n">species_idx</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+            <span class="n">all_N</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">params_list</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;N_</span><span class="si">{</span><span class="n">species_idx</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+        
+        <span class="n">species_data</span><span class="p">[</span><span class="n">species_idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;lambda&#39;</span><span class="p">:</span> <span class="n">all_lambda</span><span class="p">,</span>
+            <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="n">all_f</span><span class="p">,</span>
+            <span class="s1">&#39;gamma&#39;</span><span class="p">:</span> <span class="n">all_gamma</span><span class="p">,</span>
+            <span class="s1">&#39;v_rad&#39;</span><span class="p">:</span> <span class="n">all_v_rad</span><span class="p">,</span>
+            <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="n">all_b</span><span class="p">,</span>
+            <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="n">all_N</span>
+        <span class="p">}</span>
+    
+    <span class="c1"># Call the existing master_function with the old parameter format</span>
+    <span class="c1"># Convert species_data back to the old format that master_function expects</span>
+    <span class="n">master_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">for</span> <span class="n">species_idx</span> <span class="ow">in</span> <span class="n">species_data</span><span class="p">:</span>
+        <span class="c1"># Convert species index to ordinal suffix</span>
+        <span class="k">if</span> <span class="n">species_idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="s1">&#39;1st&#39;</span>
+        <span class="k">elif</span> <span class="n">species_idx</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="s1">&#39;2nd&#39;</span>
+        <span class="k">elif</span> <span class="n">species_idx</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="s1">&#39;3rd&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">species_idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">th&#39;</span>
+        
+        <span class="c1"># Add parameters in the old format</span>
+        <span class="n">master_kwargs</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;lambda_</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">species_data</span><span class="p">[</span><span class="n">species_idx</span><span class="p">][</span><span class="s1">&#39;lambda&#39;</span><span class="p">]</span>
+        <span class="n">master_kwargs</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;f_</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">species_data</span><span class="p">[</span><span class="n">species_idx</span><span class="p">][</span><span class="s1">&#39;f&#39;</span><span class="p">]</span>
+        <span class="n">master_kwargs</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;gamma_</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">species_data</span><span class="p">[</span><span class="n">species_idx</span><span class="p">][</span><span class="s1">&#39;gamma&#39;</span><span class="p">]</span>
+        <span class="n">master_kwargs</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;b_</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">species_data</span><span class="p">[</span><span class="n">species_idx</span><span class="p">][</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
+        <span class="n">master_kwargs</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;N_</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">species_data</span><span class="p">[</span><span class="n">species_idx</span><span class="p">][</span><span class="s1">&#39;N&#39;</span><span class="p">]</span>
+        <span class="n">master_kwargs</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;v_rad_</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">species_data</span><span class="p">[</span><span class="n">species_idx</span><span class="p">][</span><span class="s1">&#39;v_rad&#39;</span><span class="p">]</span>
+    
+    <span class="n">model</span> <span class="o">=</span> <span class="n">master_function</span><span class="p">(</span>
+        <span class="n">wavegrid</span><span class="p">,</span> 
+        <span class="n">v_resolution</span><span class="o">=</span><span class="n">v_resolution</span><span class="p">,</span> 
+        <span class="n">n_step</span><span class="o">=</span><span class="n">n_step</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">master_kwargs</span>
+    <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">model</span></div>
+
+
+<div class="viewcode-block" id="astro_voigt_fit">
+<a class="viewcode-back" href="../content/code/fitting.html#astrovoigtfit.astro_voigt_fit">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">astro_voigt_fit</span><span class="p">(</span>
+    <span class="n">wavegrid</span><span class="p">,</span> 
+    <span class="n">ydata</span><span class="p">,</span> 
+    <span class="n">species_params</span><span class="p">,</span>
+    <span class="n">v_resolution</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> 
+    <span class="n">n_step</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> 
+    <span class="n">std_dev</span><span class="o">=</span><span class="mf">0.02</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generalized Voigt-profile fitting function for multiple species with velocity constraints.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        wavegrid (array): Wavelength grid over which the absorption model is computed.</span>
+<span class="sd">        ydata (array): Observed flux or intensity data to be fitted.</span>
+<span class="sd">        species_params (dict): Dictionary containing physical parameters for each species. Each key </span>
+<span class="sd">            is a species index (int), and each value is a dictionary with:</span>
+<span class="sd">            </span>
+<span class="sd">            - &#39;lambda&#39;: list of line center wavelengths</span>
+<span class="sd">            - &#39;f&#39;: list of oscillator strengths</span>
+<span class="sd">            - &#39;gamma&#39;: list of damping constants</span>
+<span class="sd">            - &#39;b&#39;: list of Doppler parameters (km/s)</span>
+<span class="sd">            - &#39;N&#39;: list of column densities</span>
+<span class="sd">            - &#39;v_rad&#39;: list of radial velocities (km/s)</span>
+<span class="sd">        v_resolution (float, optional): Instrumental velocity resolution in km/s. Defaults to 0.0.</span>
+<span class="sd">        n_step (int, optional): Number of steps per Doppler width in Voigt profile computation.</span>
+<span class="sd">        std_dev (float, optional): Standard deviation used for weighting residuals in the fit.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        lmfit.model.ModelResult: Fitting result object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    
+    <span class="n">n_species</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">species_params</span><span class="p">)</span>
+    
+    <span class="c1"># Converting lists to numpy arrays and also validate input </span>
+    <span class="k">for</span> <span class="n">species_idx</span> <span class="ow">in</span> <span class="n">species_params</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;lambda&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;v_rad&#39;</span><span class="p">]:</span>
+            <span class="n">species_params</span><span class="p">[</span><span class="n">species_idx</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">species_params</span><span class="p">[</span><span class="n">species_idx</span><span class="p">][</span><span class="n">key</span><span class="p">])</span>
+    
+    <span class="c1"># building parameters object</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">Parameters</span><span class="p">()</span>
+    
+    <span class="c1"># Add global parameters</span>
+    <span class="n">params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;n_species&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">n_species</span><span class="p">,</span> <span class="n">vary</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;v_resolution&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">v_resolution</span><span class="p">,</span> <span class="n">vary</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;n_step&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">n_step</span><span class="p">,</span> <span class="n">vary</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+    <span class="c1"># First, identify v_rad constraint groups</span>
+    <span class="c1"># Find maximum number of components across all species</span>
+    <span class="n">max_components</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">species_params</span><span class="p">[</span><span class="n">sp</span><span class="p">][</span><span class="s1">&#39;v_rad&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="n">species_params</span><span class="p">)</span>
+    
+    <span class="c1"># Creating constraint groups for v_rad values</span>
+    <span class="n">v_rad_groups</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># component_idx -&gt; {value: [list of (species, component) pairs]}</span>
+    
+    <span class="k">for</span> <span class="n">comp_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_components</span><span class="p">):</span>
+        <span class="n">v_rad_groups</span><span class="p">[</span><span class="n">comp_idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">species_idx</span> <span class="ow">in</span> <span class="n">species_params</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">comp_idx</span> <span class="o">&lt;</span> <span class="n">species_params</span><span class="p">[</span><span class="n">species_idx</span><span class="p">][</span><span class="s1">&#39;v_rad&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+                <span class="n">v_rad_value</span> <span class="o">=</span> <span class="n">species_params</span><span class="p">[</span><span class="n">species_idx</span><span class="p">][</span><span class="s1">&#39;v_rad&#39;</span><span class="p">][</span><span class="n">comp_idx</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">v_rad_value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">v_rad_groups</span><span class="p">[</span><span class="n">comp_idx</span><span class="p">]:</span>
+                    <span class="n">v_rad_groups</span><span class="p">[</span><span class="n">comp_idx</span><span class="p">][</span><span class="n">v_rad_value</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">v_rad_groups</span><span class="p">[</span><span class="n">comp_idx</span><span class="p">][</span><span class="n">v_rad_value</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">species_idx</span><span class="p">,</span> <span class="n">comp_idx</span><span class="p">))</span>
+    
+    <span class="c1"># Creating master v_rad parameters for each unique value at each component level</span>
+    <span class="n">master_v_rad_params</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># (comp_idx, value) -&gt; parameter_name</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_valid_param_name</span><span class="p">(</span><span class="n">comp_idx</span><span class="p">,</span> <span class="n">v_rad_value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a valid parameter name from component index and v_rad value&quot;&quot;&quot;</span>
+        <span class="c1"># Replace problematic characters</span>
+        <span class="n">value_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v_rad_value</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;neg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;master_v_rad_</span><span class="si">{</span><span class="n">comp_idx</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">value_str</span><span class="si">}</span><span class="s1">&#39;</span>
+    
+    <span class="k">for</span> <span class="n">comp_idx</span> <span class="ow">in</span> <span class="n">v_rad_groups</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">v_rad_value</span> <span class="ow">in</span> <span class="n">v_rad_groups</span><span class="p">[</span><span class="n">comp_idx</span><span class="p">]:</span>
+            <span class="n">param_name</span> <span class="o">=</span> <span class="n">make_valid_param_name</span><span class="p">(</span><span class="n">comp_idx</span><span class="p">,</span> <span class="n">v_rad_value</span><span class="p">)</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">v_rad_value</span><span class="p">,</span> <span class="n">vary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">master_v_rad_params</span><span class="p">[(</span><span class="n">comp_idx</span><span class="p">,</span> <span class="n">v_rad_value</span><span class="p">)]</span> <span class="o">=</span> <span class="n">param_name</span>
+    
+    <span class="c1"># Add parameters for each species</span>
+    <span class="k">for</span> <span class="n">species_idx</span> <span class="ow">in</span> <span class="n">species_params</span><span class="p">:</span>
+        <span class="n">species_data</span> <span class="o">=</span> <span class="n">species_params</span><span class="p">[</span><span class="n">species_idx</span><span class="p">]</span>
+        
+        <span class="c1"># Transition parameters</span>
+        <span class="n">n_trans</span> <span class="o">=</span> <span class="n">species_data</span><span class="p">[</span><span class="s1">&#39;lambda&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;n_trans_</span><span class="si">{</span><span class="n">species_idx</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">n_trans</span><span class="p">,</span> <span class="n">vary</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_trans</span><span class="p">):</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;lambda_</span><span class="si">{</span><span class="n">species_idx</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">species_data</span><span class="p">[</span><span class="s1">&#39;lambda&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">vary</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;f_</span><span class="si">{</span><span class="n">species_idx</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">species_data</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">vary</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;gamma_</span><span class="si">{</span><span class="n">species_idx</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">species_data</span><span class="p">[</span><span class="s1">&#39;gamma&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">vary</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        
+        <span class="c1"># Component parameters</span>
+        <span class="n">n_component</span> <span class="o">=</span> <span class="n">species_data</span><span class="p">[</span><span class="s1">&#39;v_rad&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;n_component_</span><span class="si">{</span><span class="n">species_idx</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">n_component</span><span class="p">,</span> <span class="n">vary</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        
+        <span class="c1"># Free parameters for fitting</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_component</span><span class="p">):</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;b_</span><span class="si">{</span><span class="n">species_idx</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">species_data</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="nb">min</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">5.5</span><span class="p">)</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;N_</span><span class="si">{</span><span class="n">species_idx</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">species_data</span><span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            
+            <span class="c1"># For v_rad, create expressions that reference the master parameters</span>
+            <span class="n">v_rad_value</span> <span class="o">=</span> <span class="n">species_data</span><span class="p">[</span><span class="s1">&#39;v_rad&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">master_param_name</span> <span class="o">=</span> <span class="n">master_v_rad_params</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">v_rad_value</span><span class="p">)]</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;v_rad_</span><span class="si">{</span><span class="n">species_idx</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">expr</span><span class="o">=</span><span class="n">master_param_name</span><span class="p">)</span>
+    
+    <span class="c1"># Creating model and fitting by passing the inputs to the wrapper </span>
+    <span class="n">voigtmod</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">Voigt_fit_wrapper</span><span class="p">,</span> <span class="n">independent_vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;wavegrid&#39;</span><span class="p">])</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">voigtmod</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">ydata</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">wavegrid</span><span class="o">=</span><span class="n">wavegrid</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">std_dev</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">result</span>  <span class="c1"># great that you are reading this :)</span></div>
+
+
+
+
+
+
+
+    
+    
+        
+    
+        
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Edibles.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
