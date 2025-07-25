@@ -16,7 +16,6 @@
 
 ## Usage:
 ------
-First put the python files in ``utils`` folder to your ``edibles/utils/`` folder of ``edibles`` repo
 
 ```bash
 python astrovoightfit/utils/read_inputs.py
