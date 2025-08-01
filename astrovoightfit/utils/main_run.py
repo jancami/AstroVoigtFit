@@ -5,6 +5,7 @@ from astrovoigtfit import *
 # calling standard python libraries
 import numpy as np
 import matplotlib.pyplot as plt
+import re
 
 
 def observations(star,molecule,file_no, wave_range,species_file='species.txt'):
@@ -88,37 +89,53 @@ def continuum_fit(star, molecule,file_no, wave_range, absorption_range):
     # plt.ylabel('Normalized Flux')
     # plt.legend()
     # plt.title('Normalized Spectrum')
-    
+
+
+def _parse_bracketed_list(s):
+    inner = s.strip().strip('[]')
+    if not inner:
+        return []
+    return [float(x.strip()) for x in inner.split(',') if x.strip()]
+
 def get_species_params(species_file, species_params, molecule):
     with open(species_file) as f:
         lines = f.readlines()
 
-    headers = lines[0].split()
-    header_index = {name: idx for idx, name in enumerate(headers)}
-
     for idx, species in enumerate(molecule):
         for line in lines[1:]:
+            if not line.strip():
+                continue
+            # species name is first whitespace-separated token
             parts = line.split()
-            if parts[0] == species:
-                lambda_val = float(parts[header_index['lambda']].strip('[]'))
-                f_val = float(parts[header_index['f_value']].strip('[]'))
-                gamma_val = float(parts[header_index['gamma']].strip('[]'))
-                print(f"Species: {species}, Lambda: {lambda_val}, f: {f_val}, Gamma: {gamma_val}")
-                # Prepend values in desired order
-                reordered = {
-                    'lambda': [lambda_val],
-                    'f': [f_val],
-                    'gamma': [gamma_val],
-                }
+            if parts[0] != species:
+                continue
 
-                # Append remaining values
-                for key, value in species_params[idx].items():
-                    reordered[key] = value
+            # extract the three bracketed columns (lambda, f_value, gamma)
+            bracketed = re.findall(r'\[.*?\]', line)
+            if len(bracketed) < 3:
+                raise ValueError(f"Line for species {species} does not have expected bracketed fields: {line!r}")
 
-                species_params[idx] = reordered
-                break
-    species_params_updated =species_params 
-    return species_params_updated
+            lambda_vals = _parse_bracketed_list(bracketed[0])
+            f_vals = _parse_bracketed_list(bracketed[1])
+            gamma_vals = _parse_bracketed_list(bracketed[2])
+
+            print(f"Species: {species}, Lambda: {lambda_vals}, f: {f_vals}, Gamma: {gamma_vals}")
+
+            reordered = {
+                'lambda': lambda_vals,
+                'f': f_vals,
+                'gamma': gamma_vals,
+            }
+
+            for key, value in species_params[idx].items():
+                reordered[key] = value
+
+            species_params[idx] = reordered
+            break  # found species line, move to next
+
+    return species_params
+
+
 
 
 def astrovoigtfit_run(star,molecule, wave_range,species_params,absorption_range,file_no,species_file='species.txt'):

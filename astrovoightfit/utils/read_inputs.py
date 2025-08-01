@@ -1,4 +1,3 @@
-#fitting using astrovoigtfit
 from main_run import astrovoigtfit_run, continuum_fit
 import matplotlib.pyplot as plt
 

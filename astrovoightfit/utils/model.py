@@ -95,49 +95,6 @@ def mother_function(wavegrid, lambda0=0.0, f=0.0, gamma=0.0, b=0.0,
 # wrapper function of mother_function to properly distribute the parameter values.
 def master_function(wavegrid, v_resolution=0.0, n_step=25, **kwargs):
     import re
-    """
-    Wrapper for `mother_function` that distributes line parameters across multiple species 
-    and components (clouds) for modeling absorption profiles.
-
-    This function identifies parameter sets from `kwargs` based on suffixes (e.g., `_1`, `_2`, etc.),
-    vectorizes them for all lines and clouds, and passes them to `mother_function`. Only components
-    with non-zero column densities are modeled.
-
-    Optimized for speed (~20–30% faster than previous implementations) by:
-    - Using NumPy vectorization
-    - Avoiding unnecessary memory duplication
-    - Filtering unused components
-
-    Parameters
-    ----------
-    wavegrid : array-like
-        Wavelength grid over which the model is computed.
-
-    v_resolution : float, optional
-        Instrumental resolution in km/s. Default is 0.0 (no convolution).
-
-    n_step : int, optional
-        Number of points per Doppler width for line profile resolution.
-
-    **kwargs : dict
-        Species and component parameters. Each group should have the same suffix:
-        - lambda_<suffix>: Wavelengths of lines
-        - f_<suffix>: Oscillator strengths
-        - gamma_<suffix>: Damping constants
-        - b_<suffix>: Doppler widths (km/s)
-        - N_<suffix>: Column densities
-        - v_rad_<suffix>: Radial velocities (km/s)
-
-    Returns
-    -------
-    array-like
-        Result from `mother_function` (e.g., modeled absorption profile)
-
-    Raises
-    ------
-    ValueError
-        If parameter groups are incomplete or missing.
-    """
 
     def process_species(lambdas, f, gamma, b, N, v_rad):
         lambdas = np.atleast_1d(lambdas)

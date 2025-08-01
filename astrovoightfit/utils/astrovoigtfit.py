@@ -48,41 +48,16 @@ def fit_continuum(wavelength, flux, absorption_range, degree, return_std=False):
 # --- Wrapper for model evaluation ---
 def Voigt_fit_wrapper(**params_list):
     """
-    Generalized Voigt profile evaluation wrapper for any number of species and components.
-
-    This function is designed to be compatible with `lmfit.Model` by accepting a flat
-    parameter dictionary (`**params_list`). It extracts species-specific parameters and
-    reformats them for the `master_function`, which performs the actual absorption modeling.
-
-    Parameters
-    ----------
-    **params_list : dict
-        Dictionary of flat model parameters. Expected keys include:
-        
-        - 'n_species': Number of species to model
-        - 'wavegrid': Wavelength grid
-        - 'v_resolution': Instrumental velocity resolution in km/s
-        - 'n_step': Number of steps per Doppler width
-
-        For each species `i`, the following keys must be present:
-        
-        - 'n_trans_i': Number of transitions for species `i`
-        - 'n_component_i': Number of absorbing components for species `i`
-        
-        For each transition `j` in species `i`:
-            - 'lambda_i_j': Line center wavelength
-            - 'f_i_j': Oscillator strength
-            - 'gamma_i_j': Damping constant
-
-        For each component `k` in species `i`:
-            - 'v_rad_i_k': Radial velocity (km/s)
-            - 'b_i_k': Doppler parameter (km/s)
-            - 'N_i_k': Column density
-
-    Returns
-    -------
-    array-like
-        The absorption model evaluated over the input wavelength grid.
+    Generalized Voigt fitting wrapper that works with any number of species.
+    
+    Expected parameters:
+    - n_species: number of species
+    - wavegrid: wavelength grid
+    - v_resolution: velocity resolution
+    - n_step: number of steps
+    - For each species i: n_trans_i, n_component_i
+    - For each transition j in species i: lambda_i_j, f_i_j, gamma_i_j
+    - For each component k in species i: v_rad_i_k, b_i_k, N_i_k
     """
     n_species = params_list['n_species']
     wavegrid = params_list['wavegrid']
@@ -164,31 +139,43 @@ def astro_voigt_fit(
     species_params,
     v_resolution=0.0, 
     n_step=25, 
-    std_dev=0.02):
+    std_dev=0.02
+):
     """
-    Generalized Voigt-profile fitting function for multiple species with velocity constraints.
-
-    Args:
-        wavegrid (array): Wavelength grid over which the absorption model is computed.
-        ydata (array): Observed flux or intensity data to be fitted.
-        species_params (dict): Dictionary containing physical parameters for each species. Each key 
-            is a species index (int), and each value is a dictionary with:
-            
-            - 'lambda': list of line center wavelengths
-            - 'f': list of oscillator strengths
-            - 'gamma': list of damping constants
-            - 'b': list of Doppler parameters (km/s)
-            - 'N': list of column densities
-            - 'v_rad': list of radial velocities (km/s)
-        v_resolution (float, optional): Instrumental velocity resolution in km/s. Defaults to 0.0.
-        n_step (int, optional): Number of steps per Doppler width in Voigt profile computation.
-        std_dev (float, optional): Standard deviation used for weighting residuals in the fit.
-
+    Generalized fitting function for multiple species with v_rad constraints.
+    
+    Parameters:
+    -----------
+    wavegrid : array
+        Wavelength grid
+    ydata : array
+        Observed data to fit
+    species_params : dict
+        Dictionary containing parameters for each species.
+        Structure: {
+            0: {  # species index
+                'lambda': [list of wavelengths],
+                'f': [list of f values],
+                'gamma': [list of gamma values],
+                'b': [list of b values for each component],
+                'N': [list of N values for each component],
+                'v_rad': [list of radial velocities for each component]
+            },
+            1: { ... },  # next species
+            ...
+        }
+    v_resolution : float
+        Velocity resolution
+    n_step : int
+        Number of steps
+    std_dev : float
+        Standard deviation for weighting
+        
     Returns:
-        lmfit.model.ModelResult: Fitting result object.
+    --------
+    result : lmfit.model.ModelResult
+        Fitting result
     """
-
-
     
     n_species = len(species_params)
     
