@@ -1,0 +1,225 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="English" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voigt Profile and Continuum Fitting &mdash; AstroVoigtFit 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ae67b299"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="master_function" href="Wrapper.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            AstroVoigtFit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Code Description</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="voigt.html">Other Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forward_model.html">Forward Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Wrapper.html">master_function</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Voigt Profile and Continuum Fitting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#function-reference">Function Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#astrovoigtfit.fit_continuum"><code class="docutils literal notranslate"><span class="pre">fit_continuum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#astrovoigtfit.Voigt_fit_wrapper"><code class="docutils literal notranslate"><span class="pre">Voigt_fit_wrapper()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#astrovoigtfit.astro_voigt_fit"><code class="docutils literal notranslate"><span class="pre">astro_voigt_fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AstroVoigtFit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Voigt Profile and Continuum Fitting</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/content/code/fitting.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="voigt-profile-and-continuum-fitting">
+<h1>Voigt Profile and Continuum Fitting<a class="headerlink" href="#voigt-profile-and-continuum-fitting" title="Link to this heading"></a></h1>
+<p>This module provides tools for modeling spectroscopic absorption features using Voigt profiles
+with multiple transitions and absorbing components, along with polynomial continuum normalization.</p>
+<section id="function-reference">
+<h2>Function Reference<a class="headerlink" href="#function-reference" title="Link to this heading"></a></h2>
+<p>Below are the core functions available in the <cite>astrovoigtfit</cite> module:</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="astrovoigtfit.fit_continuum">
+<span class="sig-prename descclassname"><span class="pre">astrovoigtfit.</span></span><span class="sig-name descname"><span class="pre">fit_continuum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flux</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absorption_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astrovoigtfit.html#fit_continuum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrovoigtfit.fit_continuum" title="Link to this definition"></a></dt>
+<dd><p>Fit a Chebyshev polynomial to the continuum, excluding an absorption region.</p>
+<p>Parameters:
+- wavelength: array of wavelengths
+- flux: array of flux values
+- absorption_range: tuple (start, end) defining the absorption region to exclude
+- degree: degree of the Chebyshev polynomial
+- return_std: if True, returns standard deviation of continuum points outside absorption region</p>
+<p>Returns:
+- normalized_flux: array of normalized flux values (flux/continuum)
+- continuum: array of fitted continuum values for all wavelengths
+- poly: the fitted Chebyshev polynomial object
+- std (optional): standard deviation of points outside absorption region</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrovoigtfit.Voigt_fit_wrapper">
+<span class="sig-prename descclassname"><span class="pre">astrovoigtfit.</span></span><span class="sig-name descname"><span class="pre">Voigt_fit_wrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astrovoigtfit.html#Voigt_fit_wrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrovoigtfit.Voigt_fit_wrapper" title="Link to this definition"></a></dt>
+<dd><p>Generalized Voigt profile evaluation wrapper for any number of species and components.</p>
+<p>This function is designed to be compatible with <cite>lmfit.Model</cite> by accepting a flat
+parameter dictionary (<cite>**params_list</cite>). It extracts species-specific parameters and
+reformats them for the <cite>master_function</cite>, which performs the actual absorption modeling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**params_list</strong> (<em>dict</em>) -- <p>Dictionary of flat model parameters. Expected keys include:</p>
+<ul class="simple">
+<li><p>'n_species': Number of species to model</p></li>
+<li><p>'wavegrid': Wavelength grid</p></li>
+<li><p>'v_resolution': Instrumental velocity resolution in km/s</p></li>
+<li><p>'n_step': Number of steps per Doppler width</p></li>
+</ul>
+<p>For each species <cite>i</cite>, the following keys must be present:</p>
+<ul class="simple">
+<li><p>'n_trans_i': Number of transitions for species <cite>i</cite></p></li>
+<li><p>'n_component_i': Number of absorbing components for species <cite>i</cite></p></li>
+</ul>
+<dl class="simple">
+<dt>For each transition <cite>j</cite> in species <cite>i</cite>:</dt><dd><ul class="simple">
+<li><p>'lambda_i_j': Line center wavelength</p></li>
+<li><p>'f_i_j': Oscillator strength</p></li>
+<li><p>'gamma_i_j': Damping constant</p></li>
+</ul>
+</dd>
+<dt>For each component <cite>k</cite> in species <cite>i</cite>:</dt><dd><ul class="simple">
+<li><p>'v_rad_i_k': Radial velocity (km/s)</p></li>
+<li><p>'b_i_k': Doppler parameter (km/s)</p></li>
+<li><p>'N_i_k': Column density</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The absorption model evaluated over the input wavelength grid.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astrovoigtfit.astro_voigt_fit">
+<span class="sig-prename descclassname"><span class="pre">astrovoigtfit.</span></span><span class="sig-name descname"><span class="pre">astro_voigt_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavegrid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ydata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astrovoigtfit.html#astro_voigt_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astrovoigtfit.astro_voigt_fit" title="Link to this definition"></a></dt>
+<dd><p>Generalized Voigt-profile fitting function for multiple species with velocity constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wavegrid</strong> (<em>array</em>) -- Wavelength grid over which the absorption model is computed.</p></li>
+<li><p><strong>ydata</strong> (<em>array</em>) -- Observed flux or intensity data to be fitted.</p></li>
+<li><p><strong>species_params</strong> (<em>dict</em>) -- <p>Dictionary containing physical parameters for each species. Each key
+is a species index (int), and each value is a dictionary with:</p>
+<ul>
+<li><p>'lambda': list of line center wavelengths</p></li>
+<li><p>'f': list of oscillator strengths</p></li>
+<li><p>'gamma': list of damping constants</p></li>
+<li><p>'b': list of Doppler parameters (km/s)</p></li>
+<li><p>'N': list of column densities</p></li>
+<li><p>'v_rad': list of radial velocities (km/s)</p></li>
+</ul>
+</p></li>
+<li><p><strong>v_resolution</strong> (<em>float</em><em>, </em><em>optional</em>) -- Instrumental velocity resolution in km/s. Defaults to 0.0.</p></li>
+<li><p><strong>n_step</strong> (<em>int</em><em>, </em><em>optional</em>) -- Number of steps per Doppler width in Voigt profile computation.</p></li>
+<li><p><strong>std_dev</strong> (<em>float</em><em>, </em><em>optional</em>) -- Standard deviation used for weighting residuals in the fit.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Fitting result object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>lmfit.model.ModelResult</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Wrapper.html" class="btn btn-neutral float-left" title="master_function" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Edibles.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="English" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Other Functions &mdash; AstroVoigtFit 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ae67b299"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Forward Model" href="forward_model.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            AstroVoigtFit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Code Description</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Other Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#function-list">Function List</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#other_functions.fwhm2sigma"><code class="docutils literal notranslate"><span class="pre">fwhm2sigma()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other_functions.VoigtFWHM"><code class="docutils literal notranslate"><span class="pre">VoigtFWHM()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other_functions.getVGrid"><code class="docutils literal notranslate"><span class="pre">getVGrid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other_functions.voigt_profile"><code class="docutils literal notranslate"><span class="pre">voigt_profile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other_functions.voigt_optical_depth"><code class="docutils literal notranslate"><span class="pre">voigt_optical_depth()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#function-details">Function Details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fwhm2sigma">fwhm2sigma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#voigtfwhm">VoigtFWHM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getvgrid">getVGrid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#voigt-profile">voigt_profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#voigt-optical-depth">voigt_optical_depth</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="forward_model.html">Forward Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Wrapper.html">master_function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fitting.html">Voigt Profile and Continuum Fitting</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AstroVoigtFit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Other Functions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/content/code/voigt.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="other-functions">
+<h1>Other Functions<a class="headerlink" href="#other-functions" title="Link to this heading"></a></h1>
+<p>This module provides utility functions for working with Voigt profiles and Gaussian–Lorentzian line shapes. These are used internally by the <cite>mother_function</cite> to compute velocity grids, FWHMs, and optical depth profiles.</p>
+<section id="function-list">
+<h2>Function List<a class="headerlink" href="#function-list" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="other_functions.fwhm2sigma">
+<span class="sig-prename descclassname"><span class="pre">other_functions.</span></span><span class="sig-name descname"><span class="pre">fwhm2sigma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fwhm</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/other_functions.html#fwhm2sigma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#other_functions.fwhm2sigma" title="Link to this definition"></a></dt>
+<dd><p>Simple function to convert a Gaussian FWHM to Gaussian sigma.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="other_functions.VoigtFWHM">
+<span class="sig-prename descclassname"><span class="pre">other_functions.</span></span><span class="sig-name descname"><span class="pre">VoigtFWHM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lambda0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/other_functions.html#VoigtFWHM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#other_functions.VoigtFWHM" title="Link to this definition"></a></dt>
+<dd><p>Calculate FWHM of Voigt using the formula by Olivero.
+See the bottom of wiki Voigt Profile page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lambda0</strong> -- center wavelength in AA</p></li>
+<li><p><strong>gamma</strong> -- Lorentzian gamma (=HWHM), in frequency</p></li>
+<li><p><strong>b</strong> -- Gaussian b in km/s.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Gau_FWHM, Lor_FWHM, V_FWHM, all in km/s</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="other_functions.getVGrid">
+<span class="sig-prename descclassname"><span class="pre">other_functions.</span></span><span class="sig-name descname"><span class="pre">getVGrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lambda0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_resolution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_step</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/other_functions.html#getVGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#other_functions.getVGrid" title="Link to this definition"></a></dt>
+<dd><p>Calculate v grid to be used for Voigt profile
+Size of grid is determined by the greater of FWHM_Voigt and v_resolution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dv, velocity grid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="other_functions.voigt_profile">
+<span class="sig-prename descclassname"><span class="pre">other_functions.</span></span><span class="sig-name descname"><span class="pre">voigt_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/other_functions.html#voigt_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#other_functions.voigt_profile" title="Link to this definition"></a></dt>
+<dd><p>Function to return the value of a (normalized) Voigt profile centered at x=0
+and with (Gaussian) width sigma and Lorentz damping (=HWHM) gamma.</p>
+<p>The Voigt profile is computed using the scipy.special.wofz, which returns
+the value of the Faddeeva function.</p>
+<p>WARNING
+scipy.special.wofz is not compaible with np.float128 type parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float64</em>) -- Scalar or array of x-values</p></li>
+<li><p><strong>sigma</strong> (<em>float64</em>) -- Gaussian sigma component</p></li>
+<li><p><strong>gamma</strong> (<em>float64</em>) -- Lorentzian gamma (=HWHM) component</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Flux array for given input</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="other_functions.voigt_optical_depth">
+<span class="sig-prename descclassname"><span class="pre">other_functions.</span></span><span class="sig-name descname"><span class="pre">voigt_optical_depth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_rad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/other_functions.html#voigt_optical_depth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#other_functions.voigt_optical_depth" title="Link to this definition"></a></dt>
+<dd><p>Function to return the value of a Voigt optical depth profile at a given wavelength, for a line
+centered at lambda0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wave</strong> (<em>float64</em>) -- Wavelength at which optical depth is to be calculatd (in Angstrom)</p></li>
+<li><p><strong>lambda0</strong> (<em>float64</em>) -- Central (rest) wavelength for the absorption line, in Angstrom.</p></li>
+<li><p><strong>b</strong> (<em>float64</em>) -- The b parameter (Gaussian width), in km/s.</p></li>
+<li><p><strong>N</strong> (<em>float64</em>) -- The column density (in cm^{-2})</p></li>
+<li><p><strong>f</strong> (<em>float64</em>) -- The oscillator strength (dimensionless)</p></li>
+<li><p><strong>gamma</strong> (<em>float64</em>) -- Lorentzian gamma (=HWHM) component</p></li>
+<li><p><strong>v_rad</strong> (<em>float64</em>) -- Radial velocity of absorption line (in km/s)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Optical Depth at wave.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float64</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="function-details">
+<h2>Function Details<a class="headerlink" href="#function-details" title="Link to this heading"></a></h2>
+<section id="fwhm2sigma">
+<h3>fwhm2sigma<a class="headerlink" href="#fwhm2sigma" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fwhm2sigma</span><span class="p">(</span><span class="n">fwhm</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Convert a Gaussian full width at half maximum (FWHM) into the Gaussian standard deviation (sigma).</p>
+<p><strong>Parameters:</strong></p>
+<ul class="simple">
+<li><p><cite>fwhm</cite> (float): Full width at half maximum.</p></li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul class="simple">
+<li><p><cite>sigma</cite> (float): Standard deviation of the Gaussian profile.</p></li>
+</ul>
+</section>
+<section id="voigtfwhm">
+<h3>VoigtFWHM<a class="headerlink" href="#voigtfwhm" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">VoigtFWHM</span><span class="p">(</span><span class="n">lambda0</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Compute the Voigt profile's FWHM using Olivero's approximation.</p>
+<p><strong>Parameters:</strong></p>
+<ul class="simple">
+<li><p><cite>lambda0</cite> (float or array): Central wavelength(s) in Angstrom.</p></li>
+<li><p><cite>gamma</cite> (float): Lorentzian width (HWHM).</p></li>
+<li><p><cite>b</cite> (float): Gaussian width in km/s.</p></li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul class="simple">
+<li><p><cite>Voigt_FWHM</cite> (float): Voigt profile FWHM in km/s.</p></li>
+</ul>
+</section>
+<section id="getvgrid">
+<h3>getVGrid<a class="headerlink" href="#getvgrid" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">getVGrid</span><span class="p">(</span><span class="n">lambda0</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">v_resolution</span><span class="p">,</span> <span class="n">n_step</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Compute the velocity grid for evaluating the Voigt profile, based on either instrumental resolution or the natural FWHM of the line.</p>
+<p><strong>Returns:</strong></p>
+<ul class="simple">
+<li><p><cite>dv</cite> (array): Velocity grid in km/s.</p></li>
+</ul>
+</section>
+<section id="voigt-profile">
+<h3>voigt_profile<a class="headerlink" href="#voigt-profile" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">voigt_profile</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Compute the normalized Voigt profile using the Faddeeva function (via <cite>scipy.special.wofz</cite>).</p>
+<p><strong>Returns:</strong></p>
+<ul class="simple">
+<li><p><cite>flux</cite> (array): Normalized profile values.</p></li>
+</ul>
+</section>
+<section id="voigt-optical-depth">
+<h3>voigt_optical_depth<a class="headerlink" href="#voigt-optical-depth" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">voigt_optical_depth</span><span class="p">(</span><span class="n">wave</span><span class="p">,</span> <span class="n">lambda0</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">v_rad</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Compute the Voigt-profile-based optical depth for a given wavelength array and line parameters.</p>
+<p><strong>Parameters:</strong></p>
+<ul class="simple">
+<li><p><cite>wave</cite> (array): Wavelength array (in Angstrom).</p></li>
+<li><p><cite>lambda0</cite> (float): Central wavelength.</p></li>
+<li><p><cite>b</cite> (float): Doppler broadening (Gaussian width) in km/s.</p></li>
+<li><p><cite>N</cite> (float): Column density (in cm⁻²).</p></li>
+<li><p><cite>f</cite> (float): Oscillator strength.</p></li>
+<li><p><cite>gamma</cite> (float): Lorentzian width (HWHM).</p></li>
+<li><p><cite>v_rad</cite> (float): Radial velocity shift (in km/s).</p></li>
+</ul>
+<p><strong>Returns:</strong></p>
+<ul class="simple">
+<li><p><cite>tau</cite> (array): Optical depth at each input wavelength.</p></li>
+</ul>
+</section>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><cite>voigt_profile</cite> internally uses <cite>scipy.special.wofz</cite>, which may not support <cite>np.float128</cite>. Stick to <cite>np.float64</cite> inputs.</p></li>
+<li><p>The <cite>VoigtFWHM</cite> function uses an empirical approximation valid for most astrophysical conditions.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="forward_model.html" class="btn btn-neutral float-right" title="Forward Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Edibles.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
