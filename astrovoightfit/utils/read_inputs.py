@@ -1,37 +1,52 @@
-from main_run import astrovoigtfit_run, continuum_fit
-import matplotlib.pyplot as plt
+#================================ USER input ================================ 
 
-#user inputs
+# which star you are looking?
 star = "HD 183143"
 
-#interested molecules
+#interested molecules for fitting?
 molecule = ['13CH+_4032','12CH+_4032']  # List of molecules to analyze
 
-# file number of the observations
+# file number from the EDIBLES DR4 data set 
 file_no = 0
 
-# wavelength range for the fit  *** it's a highly sensitive parameter, so choose wisely
+# wavelength range for the fit, i.e. the range between which you want to fit the lines  (*** it's a highly sensitive parameter, so choose wisely)
 wave_range = [4231.5, 4233.5]
 
 
-# absorption range is the region where continuum is not present i.e the region where the absorption lines are present
+# absorption range is the region where continuum is not present i.e the region where the absorption lines are present. So this rigion won't be fitted for continuum.
 absorption_range = (4232.05, 4232.8)
 
 
-# guessed species parameters for the molecules to fit the spectra 
+# Initial guess parameters for the molecules to fit the spectra  (b: gaussian width, N: column density, v_rad: radial velocity)
 species_params = {
-    0: {  # 13CH+ 
-        'b': [2, 2],
+    0: {  # 1st molecule 
+        'b': [2, 2],  
         'N': [1e13/70, 1e13/70],
         'v_rad': [-11, 4]
     },
-    1: {  # 12CH+ 
+    1: {  # 2nd molecule 
         'b': [2, 2],
         'N': [1e13, 1e13],
         'v_rad': [-11, 4]
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+############################### DON'T CHANGE ANYTHING HERE ########################################################################################
+from main_run import astrovoigtfit_run, continuum_fit
+import matplotlib.pyplot as plt
 
 # before running lets check if the continuum fitted properly or not 
 wave,continuum_normalized_flux ,flux, continuum = continuum_fit(star, molecule,file_no, wave_range, absorption_range)
